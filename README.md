@@ -16,12 +16,12 @@ In future, Connection String can be moved to environment variables or to the `se
 
 Next step is to apply migrations. In Visual Studio console, it's
 ```console
-PM> Update-Database
+PM> Update-Database -Context DataContext
 ```
 
 In other terminal, go to project folder and run
 ```console
-$ dotnet ef database update
+$ dotnet ef database update --context DataContext
 ```
 
 If everything is done correctly, migrations would be successfuly applied to your database and you are ready to start the project.
