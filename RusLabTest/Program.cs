@@ -1,14 +1,20 @@
+using Microsoft.EntityFrameworkCore;
 using RusLabTest.Data;
+using RusLabTest.Middleware;
+using RusLabTest.Services;
+using RusLabTest.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>();
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"))
+);
+builder.Services.AddScoped<IProductService, ProductService>();
+
+
 
 var app = builder.Build();
 
@@ -20,6 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.MapControllers();
 
